@@ -1,0 +1,16 @@
+Program building blocks:
+- each function/block broken down to simplify debugging/edits
+- in assembly, blocks = subroutines
+  - 8800's stack organization helps this
+  - lower level = simpler task, printing a char
+  - higher level = complex task, arranging a whole sentence
+  - each call -> return address to stack
+  - "nesting" done by stack
+- show simplified program schematic
+- focus on one subroutine = one task
+- CO -> console Output, sends character in accumulator to CON device, preserves other registers
+- CI -> receives a single ASCII character from the console
+- difference between them is the change in the BDOS code across WCONF to RCONF (read console function vs write), and ANI 7FH (ANd Immediate value with accumulator)
+- used to mask off the high order bit, should always be done when received an ASCII character, to allow parity bits
+- START establishes the user stack
+- START1 introduces ComPare Immediate (CPI) to check current input character for CTRL Z (our interrupt)

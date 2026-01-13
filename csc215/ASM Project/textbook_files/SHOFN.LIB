@@ -1,0 +1,25 @@
+SHOFN:  PUSH    B
+    PUSH    H
+    LDA FCBTY
+    MOV C,A
+    XRA A
+    STA FCBTY
+    STA FCBEX
+    LXI H,TFCB
+    MOV A,M
+    ANI 0FH
+    ORI 40H
+    CALL    CO
+    MVI A,':'
+    CALL    CO
+    INX H
+    CALL    COMSG
+    MOV A,C
+    LXI H,FCBTY
+    MOV M,A
+    MVI A,'.'
+    CALL    CO
+    CALL    COMSG
+    POP H
+    POP B
+    RET

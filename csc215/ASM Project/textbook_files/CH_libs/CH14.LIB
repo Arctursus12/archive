@@ -1,0 +1,21 @@
+SPMSG:  XTHL
+    XRA A
+    ADD M
+    INX H
+    XTHL
+    RZ
+    CALL    CO
+    JMP SPMSG
+
+GETYN:  CALL    SPMSG
+    DB  ' (Y/N)?: ',0
+    CALL    CIMSG
+    CALL    CCRLF
+    LDA INBUF+2
+    ANI 01011111B
+    CPI 'Y'
+    RZ
+    CPI 'N'
+    JNZ GETYN
+    CPI 0
+    RET

@@ -1,0 +1,34 @@
+CCRLF:  MVI A,CR
+    CALL    CO
+    MVI A,LF
+    JMP CO
+
+COMSG:  MOV A,M
+    ORA A
+    RZ
+    CALL    CO
+    INX H
+    JMP COMSG
+
+CIMSG:  PUSH    B
+    PUSH    D
+    PUSH    H
+    LXI H,INBUF+1
+    MVI M,0
+    DCX H
+    MVI M,80
+    XCHG
+    MVI C,RBUFF
+    CALL    BDOS
+    LXI H,INBUF+1
+    MOV E,M
+    MVI D,0
+    DAD D
+    INX H
+    MVI M,0
+    POP H
+    POP D
+    POP B
+    RET
+
+INBUF:  DS  83

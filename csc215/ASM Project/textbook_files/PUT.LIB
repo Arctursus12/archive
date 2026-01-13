@@ -1,0 +1,68 @@
+PUT:    LXI H,BUFFR
+    SHLD    NEXT
+    LDA RECCT
+    STA CTSAV
+    LDA TFCB
+    ORA A
+    JNZ PUT1
+    CALL    WROPN
+    JMP PUTEX
+
+PUT1:   MVI C,INITF
+    CALL    BDOS
+    XRA A
+    STA FCBCR
+    LXI H,0
+    SHLD    FCBEX
+    SHLD    FCBS2
+    LXI D,TFCB
+    MVI C,FINDF
+    CALL    BDOS
+    CPI BDERR
+    JZ  PUT2
+    CALL    CCRLF
+    CALL    SPMSG
+    DB  'OK TO ERASE ',0
+    CALL    SHOFN
+    CALL    GETYN
+    JNZ PUTEX
+    LXI D,TFCB
+    MVI C,DELEF
+    CALL    BDOS
+PUT2:   LXI D,TFCB
+    MVI C,MAKEF
+    CALL    BDOS
+    CPI BDERR
+    JNZ PUT3
+    CALL    WROPN
+    JMP PUTEX
+
+PUT3:   LHLD    NEXT
+    XCHG
+    MVI C,SDMAF
+    CALL    BDOS
+    LHLD    NEXT
+    LXI D,128
+    DAD D
+    SHLD    NEXT
+    LXI D,TFCB
+    MVI C,WRITF
+    CALL    BDOS
+    CPI BDAOK
+    JZ  PUT4
+    CALL    WEMSG
+    JMP PUTEX
+
+PUT4:   LDA RECCT
+    DCR A
+    STA RECCT
+    JNZ PUT3
+    CALL    CPDMA
+    LXI D,TFCB
+    MVI C,CLOSF
+    CALL    BDOS
+    LDA CTSAV
+    STA RECCT
+PUTEX:  CALL    CCRLF
+    CALL    CPDMA
+    RET

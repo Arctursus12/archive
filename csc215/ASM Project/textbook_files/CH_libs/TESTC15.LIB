@@ -1,0 +1,15 @@
+    ORG TPA
+
+    JMP START
+HSAVE:  DS  2
+    DS  32
+START:  LXI H,0
+    DAD SP
+    SHLD    HSAVE
+    LXI SP,START
+    CALL    TWOCR
+    CALL    SHOFN
+    CALL    TWOCR
+    LHLD    HSAVE
+    SPHL
+    RET

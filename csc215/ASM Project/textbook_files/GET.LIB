@@ -1,0 +1,53 @@
+GET:    LXI H,BUFFR
+    SHLD    NEXT
+    LXI D,TFCB
+    MVI C,OPENF
+    CALL    BDOS
+    CPI BDERR
+    JNZ GET1
+    CALL    TWOCR
+    CALL    SPMSG
+    DB  'CAN NOT FIND ',0
+    CALL    SHOFN
+ERREX:  CALL    TWOCR
+    JMP DONE
+
+GET1:   XRA A
+    STA RECCT
+GET2:   LHLD    NEXT
+    XCHG
+    MVI C,SDMAF
+    CALL    BDOS
+    LXI D,TFCB
+    MVI C,READF
+    CALL    BDOS
+    CPI BDAOK
+    JZ  GET3
+    CPI BDAOK
+    JZ  GET3
+    CPI BDER1
+    JZ  GET3
+    CPI BDER1
+    JZ  GETEX
+    CALL    REMSG
+    JMP ERREX
+
+GET3:   LDA RECCT
+    INR A
+    STA RECCT
+    LHLD    NEXT
+    LXI D,128
+    DAD D
+    SHLD    NEXT
+    LDA MEMAX
+    DCR A
+    CMP H
+    JNZ GET2
+    CALL    TWOCR
+    CALL    SPMSG
+    DB  'OUT OF MEMORY',0
+    JMP ERREX
+
+GETEX:  CALL    CCRLF
+    CALL    CPDMA
+    RET

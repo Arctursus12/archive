@@ -1,0 +1,24 @@
+CI: PUSH    B
+    PUSH    D
+    PUSH    H
+    MVI C,RCONF
+    CALL    BDOS
+    ANI 7FH
+    POP H
+    POP D
+    POP B
+    RET
+
+CO: PUSH    B
+    PUSH    D
+    PUSH    H
+    MVI C,WCONF
+    MOV E,A
+    CALL    BDOS
+    POP H
+    POP D
+    POP B
+    RET
+
+TWOCR:  CALL    CCRLF
+    JMP CCRLF
